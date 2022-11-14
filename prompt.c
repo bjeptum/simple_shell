@@ -7,12 +7,12 @@ int main(__attribute__((unused))int argc, __attribute__((unused)) char **argv)
 	char *line = NULL;
 	ssize_t nread;
 
-	print("$ ");
+	printf("$ ");
 
 	nread = getline(&line, &len, stdin);
 	printf("%s", line);
 	printf("Number of characters: %ld/n", nread);
 
 	free(line);
-	exit(EXIT SUCCESS);
+	exit(EXIT_SUCCESS);
 }
