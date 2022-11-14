@@ -2,7 +2,7 @@
 #include<unistd.h>
 #include<stdlib.h>
 /**
-* min - allows a process to execute another program
+* main - allows a process to execute another program
 *
 *
 */
