@@ -1,86 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <string.h>
 #include "shell.h"
-#include <unistd.h>
-#include <sys/wait.h>
-/**
-* readline: reads an input into the buffer
-*
-* Return: the line read
-*/
-char *readline()
+char *read_cmd(void)
 {
-	char *line = (char *)malloc(sizeof(char) *1024);
-	char c;
-	int ps = 0, bufsize = 1024;
+	char buf[1024];
+	char *ptr = NULL;
+	char ptrlen = 0;
 
-	if (!line)
+	while(fgets(buf, 1024, stdin))
 	{
-		printf("\nBuffer Allocation Error.");
-		exit(EXIT_FAILURE);
-	}
-	while(1)
-	{
-		c = getchar();
-		if (c == EOF || c == '\n')
+		int buflen = strlen(buf);
+		
+		if(!ptr)
 		{
-			line[ps] = '\0';
-			return (line);
+			ptr = malloc(buflen+1);
 		}
 		else
 		{
-			line[ps] = c;
-		}
-		ps++;
-		/* buffer is exceeded*/
-		if (ps >= bufsize)
-		{
-			bufsize +=1024;
-			line = realloc(line, sizeof(char) *bufsize);
-			if (!line)
-			{
-				printf("\nBuffer Allocation Error.");
-				exit(EXIT_FAILURE);
-			}
-		}
-	}
-}
-/**
-* splitline - breaks a line into tokens
-* @line: line to be splitted
-*
-* Return: tokens (Abstract syntax Tree)
-*/
-char **splitline(char *line)
-{
-	char **tokens = (char **)malloc(sizeof(char *) * 64);
-	const char *token;
-	char delim[10] = "\t\n\r\a";
-	int ps = 0, bufsize = 64;
+			char *ptr2 = realloc(ptr, ptrlen+buflen+1);
 
-	if (!tokens)
-	{
-		printf("\nBuffer Allocation Error.");
-		exit(EXIT_FAILURE);
-	}
-	token = strtok(line, delim);
-	while (token != NULL)
-	{
-		token[ps] = token;
-		ps++;
-		if (ps >= bufsize)
-		{
-			bufsize += 64;
-			line = realloc(line, bufsize * sizeof(char *));
-			if (!line)
+			if(ptr2)
 			{
-				printf("\nBuffer Allocation Error.");
-				exit(EXIT_FAILURE);
+				ptr = ptr2;
+			}
+			else
+			{
+				free(ptr);
+				ptr = NULL;
 			}
 		}
-		token = strtok(NULL, delim);
+		if (!ptr)
+		{
+			fprintf(stderr, "error: failed to alloc buffer:%s\n", strerror(errno));
+			return (NULL);
+		}
+		strcpy(ptr+ptrlen, buf);
+
+		if(buf[buflen-1] == '\n')
+		{
+			if (buflen == 1 || buf[buflen-2] != '\\')
+			{
+				return (ptr);
+			}
+			ptr[ptrlen+buflen-2] = '\0';
+			buflen -=2;
+			prompt();
+		}
+		ptrlen += buflen;
 	}
-	token[ps] = NULL;
-	return (tokens);
+	return (ptr);
 }

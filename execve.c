@@ -6,8 +6,10 @@
 *
 *
 */
-int main (int argc, char *argv[])
+int main (void)
 {
+	int argc = 0;
+	char *argv[] = {NULL, "Main", "program", NULL};
 	char *newArgv[] = { NULL, "Main", "program", "started", NULL};
 	char *newEnvp[] = { NULL};
 
