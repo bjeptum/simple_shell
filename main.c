@@ -1,54 +1,57 @@
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include "shell.h"
-char *read_cmd(void)
+#include <unistd.h>
+#include"shell.h"
+/**
+* main - loops through read command and executes
+*
+* Return: output of command inputted
+*/
+int main(int argc, char **argv, char * envp[])
 {
-	char buf[1024];
-	char *ptr = NULL;
-	char ptrlen = 0;
+	char *cmd;
 
-	while(fgets(buf, 1024, stdin))
+	do
 	{
-		int buflen = strlen(buf);
-		
-		if(!ptr)
-		{
-			ptr = malloc(buflen+1);
-		}
-		else
-		{
-			char *ptr2 = realloc(ptr, ptrlen+buflen+1);
+		prompt();
+		cmd = read_cmd();
 
-			if(ptr2)
-			{
-				ptr = ptr2;
-			}
-			else
-			{
-				free(ptr);
-				ptr = NULL;
-			}
-		}
-		if (!ptr)
+		if (!cmd)
 		{
-			fprintf(stderr, "error: failed to alloc buffer:%s\n", strerror(errno));
-			return (NULL);
+			exit(EXIT_SUCCESS);
 		}
-		strcpy(ptr+ptrlen, buf);
+		if (cmd[0] == '\0' || strcmp(cmd, "\n") == 0)
+		{
+			free(cmd);
+			continue;
+		}
+		if (strcmp(cmd,"exit\n") == 0)
+		{
+			free(cmd);
+			break;
+		}
+		printf("%s\n",cmd);
 
-		if(buf[buflen-1] == '\n')
-		{
-			if (buflen == 1 || buf[buflen-2] != '\\')
-			{
-				return (ptr);
-			}
-			ptr[ptrlen+buflen-2] = '\0';
-			buflen -=2;
-			prompt();
-		}
-		ptrlen += buflen;
+		free(cmd);
+	}while(1);
+
+/**
+* main - allows a process to execute another program
+*
+*/
+	if (argc != 2)
+	{
+		fprintf(stderr, "Usage: %s <file>\n", argv[0]);
+		exit(EXIT_FAILURE);
 	}
-	return (ptr);
+
+	argv[0] = argv[1];
+
+	execve(argv[1], argv, envp);
+	perror("execve");
+	exit(EXIT_SUCCESS);
 }

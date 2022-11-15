@@ -7,7 +7,7 @@
 *
 * Return: prompt $
 */
-void prompt()
+void prompt(void)
 {
 	size_t len = 0;
 	char *line = NULL;
