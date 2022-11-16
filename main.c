@@ -5,7 +5,6 @@
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
-#include"shell.h"
 /**
 * main - loops through read command and executes
 *
@@ -17,7 +16,6 @@ int main(int argc, char **argv, char * envp[])
 
 	do
 	{
-		prompt();
 		cmd = read_cmd();
 
 		if (!cmd)

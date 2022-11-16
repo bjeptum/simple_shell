@@ -1,8 +1,9 @@
 #ifndef SHELL_H
 #define SHELL_H
 
-void prompt();
+
+void prompt(void);
 char *read_cmd(void);
-void prompt();
+int fork_h(char **av);
 
 #endif
