@@ -1,10 +1,11 @@
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include "shell.h"
 /**
 * main - loops through read command and executes
 *
@@ -16,6 +17,8 @@ int main(int argc, char **argv, char * envp[])
 
 	do
 	{
+		prompt();
+
 		cmd = read_cmd();
 
 		if (!cmd)
