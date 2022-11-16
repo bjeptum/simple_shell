@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-int main(__attribute__((unused))int argc, __attribute__((unused)) char **argv)
+/**
+* prompt - a program that prints $ and waits  for user input
+* @argc: count of arguments
+* @argv: array of pointers to arguments strings
+*
+* Return: prompt $
+*/
+void prompt(void)
 {
 	size_t len = 0;
 	char *line = NULL;
