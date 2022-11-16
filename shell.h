@@ -5,4 +5,4 @@ int fork_h(char **argv);
 void prompt(void);
 char *read_cmd(void);
 
-#endif 
+#endif /* SHELL_H */

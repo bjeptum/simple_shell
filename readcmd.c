@@ -3,9 +3,13 @@
 #include <errno.h>
 #include <string.h>
 #include "shell.h"
+/**
+ * read_cmd - read user input
+ * Return: line of input
+ */
 char *read_cmd(void)
 {
-	char buf[1024];
+	char buf [1024];
 	char *ptr = NULL;
 	char ptrlen = 0;
 
@@ -15,11 +19,11 @@ char *read_cmd(void)
 
 		if (!ptr)
 		{
-			ptr = malloc(buflen+1);
+			ptr = malloc(buflen + 1);
 		}
 		else
 		{
-			char *ptr2 = realloc(ptr, ptrlen+buflen+1);
+			char *ptr2 = realloc(ptr, ptrlen + buflen + 1);
 
 			if (ptr2)
 			{
