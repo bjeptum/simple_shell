@@ -8,13 +8,13 @@
 #include "shell.h"
 /**
 * fork_h - creates a child process and execute command
-* @av: command argunent
+* @argv: command argument
 * Return:  Always 0 on success and 1 on failure
 */
 int fork_h(char **argv)
 {
 	pid_t fork_val;
-	
+
 	fork_val = fork();
 
 	if (fork_val == -1)
