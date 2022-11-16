@@ -39,7 +39,8 @@ int main(int argc, char **argv, char * envp[])
 
 		free(cmd);
 	}while(1);
-
+	
+	exit(EXIT_SUCCESS);
 /**
 * main - allows a process to execute another program
 *
@@ -54,5 +55,4 @@ int main(int argc, char **argv, char * envp[])
 
 	execve(argv[1], argv, envp);
 	perror("execve");
-	exit(EXIT_SUCCESS);
 }
