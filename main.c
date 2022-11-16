@@ -8,15 +8,15 @@
 #include "shell.h"
 /**
 * main - loops through read command and executes
-*
+* @argv: count of command-line arguments
+* @argc: array of character pointers listing all the arguments
 * Return: output of command inputted
 */
-int main(int argc, char **argv, char * envp[])
+int main(__attribute__((unused))int argc, __attribute__((unused))char **argv)
 {
 	char *cmd;
 
-	do
-	{
+	do {
 		prompt();
 
 		cmd = read_cmd();
@@ -30,29 +30,15 @@ int main(int argc, char **argv, char * envp[])
 			free(cmd);
 			continue;
 		}
-		if (strcmp(cmd,"exit\n") == 0)
+		if (strcmp(cmd, "exit\n") == 0)
 		{
 			free(cmd);
 			break;
 		}
-		printf("%s\n",cmd);
+		printf("%s\n", cmd);
 
 		free(cmd);
-	}while(1);
-	
+	} while (1);
+
 	exit(EXIT_SUCCESS);
-/**
-* main - allows a process to execute another program
-*
-*/
-	if (argc != 2)
-	{
-		fprintf(stderr, "Usage: %s <file>\n", argv[0]);
-		exit(EXIT_FAILURE);
-	}
-
-	argv[0] = argv[1];
-
-	execve(argv[1], argv, envp);
-	perror("execve");
 }

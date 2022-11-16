@@ -9,11 +9,11 @@
  */
 char *read_cmd(void)
 {
-	char buf [1024];
+	char buf[1024];
 	char *ptr = NULL;
 	char ptrlen = 0;
 
-	while(fgets(buf, 1024, stdin))
+	while (fgets(buf, 1024, stdin))
 	{
 		int buflen = strlen(buf);
 
@@ -42,16 +42,16 @@ char *read_cmd(void)
 			return (NULL);
 		}
 
-		strcpy(ptr+ptrlen, buf);
+		strcpy(ptr + ptrlen, buf);
 
-		if (buf[buflen-1] == '\n')
+		if (buf[buflen - 1] == '\n')
 		{
-			if (buflen == 1 || buf[buflen-2] !='\\')
+			if (buflen == 1 || buf[buflen - 2] != '\\')
 			{
 				return (ptr);
 			}
-			ptr[ptrlen+buflen-2] = '\0';
-			buflen -=2;
+			ptr[ptrlen + buflen - 2] = '\0';
+			buflen -= 2;
 			prompt();
 		}
 
