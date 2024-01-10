@@ -7,13 +7,13 @@ The project entails creating my own Simple Shell. The challenge covers everythin
 - Group work
 - and Learning how to learn
 
-### Output 
+### Output
 The program has the exact same output as sh(/bin/sh) as well as the exact same error output.
 
-The only difference is when printing an error, the name of the programis equivalent to argv[0].
+The only difference is when printing an error, the name of the program is equivalent to argv[0].
 
 ### Compilation
-The simple is compiled this way 
+The Simple Shell is compiled this way
 ```
 gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 ```
