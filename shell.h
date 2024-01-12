@@ -15,6 +15,7 @@
 void print_prompt(void);
 char *read_cmd(void);
 void execute_cmd(char *cmd);
+void free_cmd(char *cmd);
 
 
 

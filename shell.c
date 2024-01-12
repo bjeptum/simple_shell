@@ -24,11 +24,11 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 
 			if (strcmp(cmd, "exit") == 0)
 			{
-				free(cmd);
+				free_cmd(cmd);
 				break; /* Exit the shell */
 			}
 			execute_cmd(cmd);
-			free(cmd);
+			free_cmd(cmd);
 		}
 	}
 	else
@@ -39,7 +39,7 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 		if (!cmd)
 			return (-1);
 		execute_cmd(cmd);
-		free(cmd);
+		free_cmd(cmd);
 	}
 	return (0);
 }
@@ -64,9 +64,11 @@ char *read_cmd(void)
 {
 	size_t len;
 	size_t bufsize = 0;
+	ssize_t bytes_read;
 	char *cmd = NULL;
 
-	if (getline(&cmd, &bufsize, stdin) == -1)
+	bytes_read = getline(&cmd, &bufsize, stdin);
+	if (bytes_read == -1)
 	{
 		free(cmd);
 		return (NULL); /*(Ctrl+D)*/
@@ -77,4 +79,14 @@ char *read_cmd(void)
 	if (len > 0 && cmd[len - 1] == '\n')
 		cmd[len - 1] = '\0';
 	return (cmd);
+}
+
+/**
+ * free_cmd - free memory allocated by getline
+ * @cmd: command executed
+ * Return: 0 on success
+ */
+void free_cmd(char *cmd)
+{
+	free(cmd);
 }
