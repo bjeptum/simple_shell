@@ -14,7 +14,7 @@
 /* Functions */
 void print_prompt(void);
 char *read_cmd(void);
-void execute_cmd(cmd);
+void execute_cmd(char *cmd);
 
 
 
