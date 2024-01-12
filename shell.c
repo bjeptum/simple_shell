@@ -21,6 +21,12 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 
 			if (!cmd)
 				break; /* End of file */
+
+			if (strcmp(cmd, "exit") == 0)
+			{
+				free(cmd);
+				break; /* Exit the shell */
+			}
 			execute_cmd(cmd);
 			free(cmd);
 		}

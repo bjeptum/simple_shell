@@ -27,8 +27,12 @@ void execute_cmd(char *cmd)
 		args[0] = cmd;
 		args[1] = NULL;
 
-		execve(cmd, args, NULL);
-		perror("execve");
+		if (execve(cmd, args, NULL) == -1)
+		{
+			perror("execve");
+			free(args);
+			_exit(EXIT_FAILURE);
+		}
 
 		free(args);
 		_exit(EXIT_FAILURE);
