@@ -24,7 +24,7 @@ void print_environment(void);
 char *find_executable(char *command);
 void execute_cmd(char *cmd);
 char **tokenize_command(char *cmd, int *arg_count);
-static void execute_child(char **args);
+void execute_child(char **args);
 
 
 

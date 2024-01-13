@@ -4,7 +4,7 @@
  * @args: array of arguments
  * Return: 0 on success
  */
-static void execute_child(char **args)
+void execute_child(char **args)
 {
 	if (access(args[0], X_OK) == 0)
 	{
