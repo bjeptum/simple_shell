@@ -11,11 +11,21 @@
 #include <errno.h>
 
 
+/* External variable declaration */
+extern char **environ;
+
 /* Functions */
 void print_prompt(void);
 char *read_cmd(void);
 void execute_cmd(char *cmd);
 void free_cmd(char *cmd);
+void exit_shell(void);
+void print_environment(void);
+char *find_executable(char *command);
+void execute_cmd(char *cmd);
+char **tokenize_command(char *cmd, int *arg_count);
+static void execute_child(char **args);
+
 
 
 

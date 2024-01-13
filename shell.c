@@ -25,9 +25,16 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 			if (strcmp(cmd, "exit") == 0)
 			{
 				free_cmd(cmd);
-				break; /* Exit the shell */
+				exit_shell();/* Exit the shell */
 			}
-			execute_cmd(cmd);
+			else if (strcmp(cmd, "env") == 0)
+			{
+				print_environment();
+			}
+			else
+			{
+				execute_cmd(cmd);
+			}
 			free_cmd(cmd);
 		}
 	}
