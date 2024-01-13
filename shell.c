@@ -1,7 +1,6 @@
 #include "shell.h"
 /**
- * main - check whether shell is in interactive or
- * non-interactive mode
+ * main - checkshell if interactive/ non-interactive
  * @argc: total number of arguments passed
  * @argv: array of pointers to the argument strings
  *
@@ -10,42 +9,31 @@
 int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 {
 	char *cmd;
+	ssize_t bytes_read;
 
-	if (isatty(STDIN_FILENO))
+	while (1)
 	{
-		/* Interactive mode */
-		while (1)
+		if (isatty(STDIN_FILENO))
 		{
+			/* Interactive mode */
 			print_prompt();
-			cmd = read_cmd();
-
-			if (!cmd)
-				break; /* End of file */
-
-			if (strcmp(cmd, "exit") == 0)
-			{
-				free_cmd(cmd);
-				exit_shell();/* Exit the shell */
-			}
-			else if (strcmp(cmd, "env") == 0)
-			{
-				print_environment();
-			}
-			else
-			{
-				execute_cmd(cmd);
-			}
-			free_cmd(cmd);
 		}
-	}
-	else
-	{
-		/* Non-Interactive mode */
-		cmd = read_cmd();
-
-		if (!cmd)
-			return (-1);
-		execute_cmd(cmd);
+		bytes_read = read_cmd(&cmd);
+		if (bytes_read == -1)
+		{
+			break; /* End of file */
+		}
+		if (bytes_read == 0)
+			continue;
+		if (strcmp(cmd, "exit") == 0)
+		{
+			free_cmd(cmd);
+			exit_shell();/* Exit the shell */
+		}
+		else if (strcmp(cmd, "env") == 0)
+			print_environment();
+		else
+			execute_cmd(cmd);
 		free_cmd(cmd);
 	}
 	return (0);
@@ -65,27 +53,28 @@ void print_prompt(void)
 
 /**
  * read_cmd - reads the command inputted by user
- * Return: string containing the command
+ * @cmd: pointer to store the command
+ * Return: number of bytes read or -1 on failure
  */
-char *read_cmd(void)
+ssize_t read_cmd(char **cmd)
 {
 	size_t len;
 	size_t bufsize = 0;
 	ssize_t bytes_read;
-	char *cmd = NULL;
+	*cmd = NULL;
 
-	bytes_read = getline(&cmd, &bufsize, stdin);
+	bytes_read = getline(cmd, &bufsize, stdin);
 	if (bytes_read == -1)
 	{
-		free(cmd);
-		return (NULL); /*(Ctrl+D)*/
+		free(*cmd);
+		return (-1); /*(Ctrl+D)*/
 	}
 	/* Remove newline character at the end */
-	len = strlen(cmd);
+	len = strlen(*cmd);
 
-	if (len > 0 && cmd[len - 1] == '\n')
-		cmd[len - 1] = '\0';
-	return (cmd);
+	if (len > 0 && (*cmd)[len - 1] == '\n')
+		(*cmd)[len - 1] = '\0';
+	return (bytes_read);
 }
 
 /**

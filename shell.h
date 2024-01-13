@@ -16,7 +16,7 @@ extern char **environ;
 
 /* Functions */
 void print_prompt(void);
-char *read_cmd(void);
+ssize_t read_cmd(char **cmd);
 void execute_cmd(char *cmd);
 void free_cmd(char *cmd);
 void exit_shell(void);
