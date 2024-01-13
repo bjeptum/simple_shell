@@ -24,22 +24,27 @@ void execute_cmd(char *cmd)
 			perror("malloc");
 			_exit(EXIT_FAILURE);
 		}
-		args[0] = cmd;
-		args[1] = NULL;
-
-		if (execve(cmd, args, NULL) == -1)
+		/* Check if cmd is file path or a command */
+		if (access(cmd, X_OK) == 0)
+		{
+			/* if executable file path */
+			args[0] = cmd;
+			args[1] = NULL;
+		}
+		else
+		{
+			/* if just a command */
+			args[0] = cmd;
+			args[1] = NULL;
+		}
+		if (execve(args[0], args, NULL) == -1)
 		{
 			perror("execve");
 			free(args);
 			_exit(EXIT_FAILURE);
 		}
-
-		free(args);
-		_exit(EXIT_FAILURE);
 	}
 	else
-	{
 		/* In the parent proces */
 		wait(NULL);
-	}
 }
