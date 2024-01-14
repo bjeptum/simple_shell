@@ -47,20 +47,32 @@ void execute_cmd(char *cmd)
 {
 	char **args;
 	int arg_count;
+	int status;
 	pid_t pid = fork();
 
-	if (pid == -1)
+	if (check_builtin(cmd))
 	{
-		perror("Fork failed");
-		_exit(EXIT_FAILURE);
-	}
-	if (pid == 0)
-	{
-		/* In the child process */
-		args = tokenize_command(cmd, &arg_count);
-		execute_child(args);
+		execute_builtin(cmd);
 	}
 	else
-		/* In the parent process */
-		wait(NULL);
+	{
+		do {
+			if (pid == -1)
+			{
+				perror("Fork failed");
+				_exit(EXIT_FAILURE);
+			}
+			if (pid == 0)
+			{
+				/* In the child process */
+				args = tokenize_command(cmd, &arg_count);
+				execute_child(args);
+			}
+			else
+			{
+				/* In the parent process */
+				waitpid(pid, &status, 0);
+			}
+		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	}
 }

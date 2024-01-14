@@ -25,15 +25,11 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 		}
 		if (bytes_read == 0)
 			continue;
-		if (strcmp(cmd, "exit") == 0)
+		if (!execute_builtin(cmd))
 		{
-			free_cmd(cmd);
-			exit_shell();/* Exit the shell */
-		}
-		else if (strcmp(cmd, "env") == 0)
-			print_environment();
-		else
 			execute_cmd(cmd);
+		}
+
 		free_cmd(cmd);
 	}
 	return (0);

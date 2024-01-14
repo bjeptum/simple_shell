@@ -25,7 +25,8 @@ char *find_executable(char *command);
 void execute_cmd(char *cmd);
 char **tokenize_command(char *cmd, int *arg_count);
 void execute_child(char **args);
-
+int check_builtin(char *cmd);
+int execute_builtin(char *cmd);
 
 
 
